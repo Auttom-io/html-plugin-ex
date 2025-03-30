@@ -1,0 +1,127 @@
+
+:root {
+    /* Font */
+    --primary_font: 'Montserrat', sans-serif;
+    --secondary_font: 'Inter', sans-serif;
+    /* Color */
+    --primary_color: #1E2D58;
+    --secondary_color: #606D92;
+    --accent_color: #FBFCFF;
+    /* BG */
+    --primary_bg: #F6F7F9;
+}
+
+/* FAQ Section Start */
+.d2c_faq_wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 0px;
+}
+h2 {
+    color: var(--primary_color);
+    font-family: var(--primary_font);
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+}
+h3 {
+    color: var(--primary_color);
+    font-family: var(--primary_font);
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+p {
+    color: var(--secondary_color);
+    font-family: var(--secondary_font);
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    width: 440px;
+}
+.btn {
+    color: var(--accent_color);
+    font-size: 17px;
+    font-family: var(--secondary_font);
+    font-weight: 700;
+    background: var(--primary_color);
+    padding: 9px 30px 8px;
+    border: 2px solid var(--primary_color);
+    border-radius: 4px;
+    transition: 0.4s all ease;
+}
+.btn:hover {
+    color: var(--primary_color);
+    background: transparent;
+    border: 2px solid var(--primary_color);
+    transition: 0.4s all ease;
+}
+.btn:active {
+    color: var(--primary_color) !important;
+    background: transparent !important;
+    border: 2px solid var(--primary_color) !important;
+    transition: 0.4s all ease;
+}
+.accordion-item {
+    background-color: var(--primary_bg);
+    margin-bottom: 20px;
+    border: 0px;
+    padding: 12px 16px;
+}
+.accordion-button {
+    background-color: var(--primary_bg);
+    color: var(--primary_color);
+    font-family: var(--secondary_font);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: capitalize;
+    position: relative;
+}
+.accordion-button:not(.collapsed) {
+    color: var(--primary_color);
+    background-color: transparent;
+    box-shadow: none;
+}
+.accordion-button:focus {
+    color: var(--primary_color);
+    box-shadow: none;
+}
+.accordion-body {
+    color: var(--secondary_color);
+    font-family: var(--secondary_font);
+    font-size: 16px;
+    font-weight: 400;
+    padding-top: 0px !important;
+}
+.accordion-button::after {
+    content: '\f067';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 700;
+    position: absolute;
+    right: 0;
+    background-image: none;
+}
+.accordion-button:not(.collapsed)::after {
+    content: '\f068';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 700;
+    position: absolute;
+    right: 0;
+    background-image: none;
+}
+/* FAQ Section End */
+
+
+
+
+/* 
+    Template Name: {{10+ Bootstrap FAQ Section for Your Website - Free Download}}
+    Template URL: {{https://designtocodes.com/product/10-bootstrap-faq-section-v3}}
+    Description: {{The best FAQ section kit template for your next website! Make your own customizable FAQ  section and give your visitors the right FAQs.}}
+    Author: DesignToCodes
+    Author URL: https://www.designtocodes.com
+    Text Domain: {{FAQ Section UI Kits}}
+ */
