@@ -626,7 +626,6 @@
     }
 }
 
-// Media queries for CarExtras
 @media (min-width: 768px) {
     .insurance-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -867,7 +866,6 @@
     margin: 0;
 }
 
-// Media queries for CartSummary
 @media (max-width: 767px) {
     .summary-header,
     .summary-item,
@@ -1080,7 +1078,6 @@
     }
 }
 
-// Media queries for CustomerInfo confirmation
 @media (max-width: 767px) {
     .confirmation-container {
         padding: 2rem 1rem;

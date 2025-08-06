@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 // import i18n (needs to be bundled ;))
 import './i18n';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('auttom-rental-plugin'));
 root.render(
   <React.StrictMode>
     <App />
