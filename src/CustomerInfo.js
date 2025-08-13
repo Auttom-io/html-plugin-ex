@@ -162,11 +162,13 @@ const CustomerInfo = () => {
                 },
                 extras: selectedExtras.map(extra => ({
                     id: extra.id,
+                    name: extra.name,
                     quantity: extra.quantity || 1,
                     price: extra.totalPrice
                 })),
                 insurance: selectedInsurance ? {
                     id: selectedInsurance.id,
+                    name: selectedInsurance.name,
                     price: selectedInsurance.totalPrice
                 } : null,
                 totalPrice: totalPrice
@@ -224,7 +226,7 @@ const CustomerInfo = () => {
                                     </div>
                                     
                                     <h1 className="confirmation-title">
-                                        {'Booking Confirmed!'}
+                                        {'Booking Request Submitted!'}
                                     </h1>
                                     
                                     <p className="confirmation-subtitle">
