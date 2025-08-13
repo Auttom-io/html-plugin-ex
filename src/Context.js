@@ -102,11 +102,11 @@ const DataContext = createContext({
 const DataContextProvider = ({children}) => {
 
     const [config, setConfig] = useState({
-        apiBaseUrl: 'http://localhost:3001',
-        apiKey: '041b6dc7-5903-4be9-b34c-abe10187e51e',
+        apiBaseUrl: 'https://api-dev.auttom.io',
+        apiKey: '2c6e894d-9625-45ad-9887-8267c42fb5dc',
         currency: 'EUR',
         buildUri: (path) => {
-            return `http://localhost:3001${path}?api_key=041b6dc7-5903-4be9-b34c-abe10187e51e`;
+            return `https://api-dev.auttom.io${path}?api_key=2c6e894d-9625-45ad-9887-8267c42fb5dc`;
         }
     });
     const [locations, setLocations] = useState([]);
