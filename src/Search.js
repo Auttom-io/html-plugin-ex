@@ -77,11 +77,11 @@ const useData = () => {
     };
 }
 
-const PickUpControl = ( { locations, value, touched, onChange } ) => {
+const PickUpControl = ( { locations, value, touched, onChange, formSubmitted } ) => {
 
     const { t } = useTranslation();
     const { __ } = t;
-    const isInvalid = touched && (!Array.isArray(value) || !value.length);
+    const isInvalid = formSubmitted && touched && (!Array.isArray(value) || !value.length);
 
     return (
         <div className="search-field">
@@ -114,9 +114,9 @@ const PickUpControl = ( { locations, value, touched, onChange } ) => {
     );
 };
 
-const DropOffControl = ( { locations, value, touched, onChange } ) => {
+const DropOffControl = ( { locations, value, touched, onChange, formSubmitted } ) => {
 
-    const isInvalid = touched === true && (!Array.isArray(value) || !value.length);
+    const isInvalid = formSubmitted && touched === true && (!Array.isArray(value) || !value.length);
 
     return (
         <div className="search-field">
@@ -284,13 +284,20 @@ const Search = (props) => {
         e.preventDefault();
         setFormSubmitted(true);
         setPickUpLocationChanged(true);
-        setDropOffLocationChanged(true);
+        if (!sameDropOffLocation) {
+            setDropOffLocationChanged(true);
+        }
 
-        if(bookingStartTime && bookingEndTime && pickUpLocation && pickUpLocation.length > 0 && dropOffLocation && dropOffLocation.length > 0)
+        // Validate required fields
+        const hasPickupLocation = pickUpLocation && pickUpLocation.length > 0;
+        const hasDropoffLocation = dropOffLocation && dropOffLocation.length > 0;
+        const dropoffValid = sameDropOffLocation || hasDropoffLocation;
+
+        if(bookingStartTime && bookingEndTime && hasPickupLocation && dropoffValid)
         {
             const _searchData = {
                 pickUpId: pickUpLocation[0].id,
-                dropOffId: dropOffLocation[0].id,
+                dropOffId: sameDropOffLocation ? pickUpLocation[0].id : dropOffLocation[0].id,
                 bookingStart: bookingStartTime,
                 bookingEnd: bookingEndTime,
                 sameDropOffLocation: sameDropOffLocation,
@@ -316,6 +323,7 @@ const Search = (props) => {
                                 locations={locations} 
                                 value={pickUpLocation} 
                                 touched={pickUpLocationChanged} 
+                                formSubmitted={formSubmitted}
                                 onChange={(data) => {
                                     setPickUpLocation(data);
                                     setPickUpLocationChanged(true);
@@ -325,6 +333,7 @@ const Search = (props) => {
                                 locations={locations} 
                                 value={dropOffLocation} 
                                 touched={dropOffLocationChanged} 
+                                formSubmitted={formSubmitted}
                                 onChange={(data) => {
                                     setDropOffLocation(data);
                                     setDropOffLocationChanged(true);
@@ -336,6 +345,7 @@ const Search = (props) => {
                             locations={locations} 
                             value={pickUpLocation} 
                             touched={pickUpLocationChanged} 
+                            formSubmitted={formSubmitted}
                             onChange={(data) => setPickUpLocation(data)} 
                         />
                     )}
