@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import './frontend.css';
 
 import { useDataContext } from './Context';
 import { useTranslation } from 'react-i18next';
@@ -79,106 +81,163 @@ const PickUpControl = ( { locations, value, touched, onChange } ) => {
 
     const { t } = useTranslation();
     const { __ } = t;
+    const isInvalid = touched && (!Array.isArray(value) || !value.length);
 
     return (
-        <>
-            <label for="auttom_pickUpLocation" class="fw-medium">
-                <small>PICK UP LOCATION</small>
-            </label>
-            <div class="d-flex">
-                <div class="input-group-text" style={{borderTopRightRadius: 0, borderBottomRightRadius: 0}}>
-                    <i class="bi bi-geo-alt" ></i>
+        <div className="search-field">
+            <label className="search-label">Pickup Location</label>
+            <div className={`search-input-container ${isInvalid ? 'is-invalid' : ''}`}>
+                <div className="search-icon">
+                    <i className="bi bi-geo-alt"></i>
                 </div>
-
                 <Typeahead
                     id="auttom_pickUpLocation"
                     labelKey="fullAddress"
                     onChange={onChange}
                     options={locations}
-                    placeholder={'Pick up'}
-                    inputProps={{required: true, style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}}
-                    isInvalid={touched && (!Array.isArray(value) || !value.length)}
-                    style={{width: '100%'}}
+                    placeholder="Select pickup location"
+                    inputProps={{ 
+                        required: true,
+                        autoComplete: "on"
+                    }}
+                    className="search-typeahead"
+                    isInvalid={isInvalid}
                     selected={value}
                 />
+                {isInvalid && (
+                    <div className="search-error-icon">
+                        <i className="bi bi-exclamation-circle"></i>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
 const DropOffControl = ( { locations, value, touched, onChange } ) => {
 
-    return (
-        <>
-            <label for="auttom_returnLocation" class="fw-medium">
-                <small>{'RETURN LOCATION'}</small>
-            </label>
-            <div class="d-flex">
-                <div class="input-group-text" style={{borderTopRightRadius: 0, borderBottomRightRadius: 0}}>
-                    <i class="bi bi-geo-alt"></i>
-                </div>
+    const isInvalid = touched === true && (!Array.isArray(value) || !value.length);
 
+    return (
+        <div className="search-field">
+            <label className="search-label">Return Location</label>
+            <div className={`search-input-container ${isInvalid ? 'is-invalid' : ''}`}>
+                <div className="search-icon">
+                    <i className="bi bi-geo-alt"></i>
+                </div>
                 <Typeahead
-                        id="auttom_dropOffLocation"
-                        labelKey="fullAddress"
-                        onChange={onChange}
-                        options={locations}
-                        placeholder={'Return'}
-                        inputProps={{required: true, style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}}
-                        isInvalid={touched === true && (!Array.isArray(value) || !value.length)}
-                        style={{width: '100%'}}
-                        selected={value}
-                    />
+                    id="auttom_dropOffLocation"
+                    labelKey="fullAddress"
+                    onChange={onChange}
+                    options={locations}
+                    placeholder="Select return location"
+                    inputProps={{ 
+                        required: true,
+                        autoComplete: "off"
+                    }}
+                    className="search-typeahead"
+                    isInvalid={isInvalid}
+                    selected={value}
+                />
+                {isInvalid && (
+                    <div className="search-error-icon">
+                        <i className="bi bi-exclamation-circle"></i>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
 const BookingStartControl = ({value, isInvalid, onChange}) => {
+    const hasError = !value;
+    
     return (
-        <>
-            <label for="auttom_bookingStart" class="fw-medium"><small>{'FROM'}</small></label>
-            <div class="input-group">
-                <input type="datetime-local" value={value} min={formatDateTime(new Date())} onChange={onChange} required className={"form-control" + isInvalid} id="auttom_bookingStart" placeholder="From"/>
+        <div className="search-field">
+            <label className="search-label">From</label>
+            <div className={`search-input-container ${hasError && isInvalid ? 'is-invalid' : ''}`}>
+                <input 
+                    type="datetime-local" 
+                    value={value} 
+                    min={formatDateTime(new Date())} 
+                    onChange={onChange} 
+                    required 
+                    className="search-input"
+                    id="auttom_bookingStart"
+                />
+                {hasError && isInvalid && (
+                    <div className="search-error-icon">
+                        <i className="bi bi-exclamation-circle"></i>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
 const BookingEndControl = ({value, earliestBookingEndTime, isInvalid, onChange}) => {
+    const hasError = !value;
+    
     return (
-        <>
-            <label for="auttom_bookingEnd" class="fw-medium"><small>{'UNTIL'}</small></label>
-            <div class="input-group">
-                <input type="datetime-local" value={value} min={earliestBookingEndTime} onChange={onChange} required className={"form-control" + isInvalid} id="auttom_bookingEnd" placeholder="From"/>
+        <div className="search-field">
+            <label className="search-label">Until</label>
+            <div className={`search-input-container ${hasError && isInvalid ? 'is-invalid' : ''}`}>
+                <input 
+                    type="datetime-local" 
+                    value={value} 
+                    min={earliestBookingEndTime} 
+                    onChange={onChange} 
+                    required 
+                    className="search-input"
+                    id="auttom_bookingEnd"
+                />
+                {hasError && isInvalid && (
+                    <div className="search-error-icon">
+                        <i className="bi bi-exclamation-circle"></i>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
 const AgeGroupControl = ({value, onChange}) => {
     return (
-        <div class="form-floating mt-2">
-            <select required defaultValue={value} onChange={onChange} class="form-select small" id="auttom_AgeGroup" aria-label="Floating label select example" style={ {maxWidth: 'fit-content', fontSize: 'smaller'} }>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24+</option>
-            </select>
-            <label for="auttom_AgeGroup" style={ {maxWidth: 'fit-content', fontSize: 'smaller'} }><small>{'AGE'}</small></label>
+        <div className="search-field compact">
+            <label className="search-label">Age</label>
+            <div className="search-input-container">
+                <select 
+                    required 
+                    defaultValue={value} 
+                    onChange={onChange} 
+                    className="search-select" 
+                    id="auttom_AgeGroup"
+                >
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24+</option>
+                </select>
+            </div>
         </div>
     );
 };
 
 const SameDropOffLocationControl = ({value, onChange}) => {
     return (
-        <div class="form-check mt-2">
-            <input required checked={value === true} onChange={onChange} class="form-check-input" type="checkbox" id="auttom_sameReturnLocation"/>
-            <label class="form-check-label fw-medium" for="auttom_sameReturnLocation">
-                <small style={ {fontSize: 'smaller'} }>{'SAME RETURN LOCATION'}</small>
+        <div className="search-checkbox-group">
+            <input 
+                checked={value === true} 
+                onChange={onChange} 
+                className="search-checkbox" 
+                type="checkbox" 
+                id="auttom_sameReturnLocation"
+            />
+            <label className="search-checkbox-label" htmlFor="auttom_sameReturnLocation">
+                Same return location
             </label>
         </div>
     );
@@ -215,12 +274,15 @@ const Search = (props) => {
         setStage,
     } = useData();
 
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
     useEffect(() => {
         setStage(1); // Set the stage to 1 (Search)
     }, []);
 
     const searchCars = (e) => {
         e.preventDefault();
+        setFormSubmitted(true);
         setPickUpLocationChanged(true);
         setDropOffLocationChanged(true);
 
@@ -244,90 +306,96 @@ const Search = (props) => {
     }
 
     return (
-        <>
-            {/* <BookingProgressNew /> */}
-            <div class="container py-3">
-                <form>
-                    {/* Main form row */}
-                    <div class="row g-3">
-                        {sameDropOffLocation === false &&
-                            <>
-                                {/* Pick Up Location - Full width on mobile, 4 columns on larger screens */}
-                                <div class="col-12 col-md-4">
-                                    <PickUpControl locations={locations} value={pickUpLocation} touched={pickUpLocationChanged} onChange={(data) => {
-                                        setPickUpLocation(data);
-                                        setPickUpLocationChanged(true);
-                                        }}  />
-                                </div>
+        <div className="search-widget">
+            <form>
+                {/* Main inline search form */}
+                <div className="search-form-inline">
+                    {sameDropOffLocation === false ? (
+                        <>
+                            <PickUpControl 
+                                locations={locations} 
+                                value={pickUpLocation} 
+                                touched={pickUpLocationChanged} 
+                                onChange={(data) => {
+                                    setPickUpLocation(data);
+                                    setPickUpLocationChanged(true);
+                                }}  
+                            />
+                            <DropOffControl 
+                                locations={locations} 
+                                value={dropOffLocation} 
+                                touched={dropOffLocationChanged} 
+                                onChange={(data) => {
+                                    setDropOffLocation(data);
+                                    setDropOffLocationChanged(true);
+                                }} 
+                            />
+                        </>
+                    ) : (
+                        <PickUpControl 
+                            locations={locations} 
+                            value={pickUpLocation} 
+                            touched={pickUpLocationChanged} 
+                            onChange={(data) => setPickUpLocation(data)} 
+                        />
+                    )}
+                    
+                    <BookingStartControl 
+                        value={bookingStartTime} 
+                        isInvalid={formSubmitted} 
+                        onChange={(e) => {
+                            const startDate = e.target.value;
+                            const firstPossibleEndTime = formatDateTime(addHours(startDate, 1));
 
-                                {/* Drop Off Location - Full width on mobile, 4 columns on larger screens */}
-                                <div class="col-12 col-md-4">
-                                    <DropOffControl locations={locations} value={dropOffLocation} touched={dropOffLocationChanged} onChange={(data) => {
-                                        setDropOffLocation(data);
-                                        setDropOffLocationChanged(true);
-                                    }} />
-                                </div>
-                            </>
-                        }
+                            setBookingStartTime(startDate);
+                            setEarliestBookingEndTime(firstPossibleEndTime);
 
-                        {sameDropOffLocation === true &&
-                            <>
-                                {/* Single location when same pickup/dropoff - Full width on mobile, 8 columns on larger screens */}
-                                <div class="col-12 col-md-8">
-                                    <PickUpControl locations={locations} value={pickUpLocation} touched={pickUpLocationChanged} onChange={(data) => setPickUpLocation(data)} />
-                                </div>
-                            </>
-                        }
+                            if(new Date(startDate).getTime() >= new Date(bookingEndTime).getTime()) {
+                                setBookingEndTime(firstPossibleEndTime);
+                            }
+                        }} 
+                    />
+                    
+                    <BookingEndControl 
+                        value={bookingEndTime} 
+                        earliestBookingEndTime={earliestBookingEndTime} 
+                        isInvalid={formSubmitted} 
+                        onChange={(e) => setBookingEndTime(e.target.value)} 
+                    />
 
-                        {/* Start Date Control - Full width on mobile, 2 columns on larger screens */}
-                        <div class="col-12 col-md-2">
-                            <BookingStartControl value={bookingStartTime} isInvalid={!bookingStartTime ? ' is-invalid' : ''} onChange={(e) => {
-                                const startDate = e.target.value;
-                                const firstPossibleEndTime = formatDateTime(addHours(startDate, 1));
+                    <AgeGroupControl 
+                        value={ageGroup} 
+                        onChange={(e) => setAgeGroup(e.target.value)} 
+                    />
 
-                                setBookingStartTime(startDate);
-                                setEarliestBookingEndTime(firstPossibleEndTime);
-
-                                if(new Date(startDate).getTime() >= new Date(bookingEndTime).getTime()) {
-                                    setBookingEndTime(firstPossibleEndTime);
-                                }
-
-                            }} />
-                        </div>
-
-                        {/* End Date Control - Full width on mobile, 2 columns on larger screens */}
-                        <div class="col-12 col-md-2">
-                            <BookingEndControl value={bookingEndTime} earliestBookingEndTime={earliestBookingEndTime} isInvalid={!bookingEndTime ? ' is-invalid' : ''} onChange={(e) => setBookingEndTime(e.target.value)} />
-                        </div>
+                    <div className="search-field submit-field">
+                        <label className="search-label" style={{opacity: 0}}>Search</label>
+                        <button 
+                            type="submit" 
+                            className="search-submit-btn" 
+                            onClick={searchCars}
+                        > 
+                            <i className="bi bi-search"></i>
+                            Search
+                        </button>
                     </div>
+                </div>
 
-                    {/* Secondary controls row */}
-                    <div class="row g-3">
-                        {/* Same Return Location Control */}
-                        <div class="col-12 col-md-4">
-                            <SameDropOffLocationControl value={sameDropOffLocation} onChange={(e) => setSameDropOffLocation(!sameDropOffLocation)} />
-                        </div>
-
-                        {/* Age Group Control */}
-                        <div class="col-12 col-md-4">
-                            <AgeGroupControl value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)} />
-                        </div>
-
-                        {/* Submit Button - Full width on mobile, auto on larger screens */}
-                        <div class="col-12 col-md-auto ms-md-auto d-flex align-items-end">
-                            <button type="submit" class="btn btn-outline-dark rounded w-100" style={{ minHeight: '48px' }} onClick={searchCars}> 
-                                <small class="fw-medium">BOOK NOW</small>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <footer className="d-flex justify-content-end">
-                    <small className="text-muted" style={{fontWeight: 'lighter'}}>
-                        Powered by <a href="https://auttom.io" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">@Auttom </a>
-                    </small>
-                </footer>
-            </div>
-        </>
+                {/* Options row */}
+                <div className="search-options">
+                    <SameDropOffLocationControl 
+                        value={sameDropOffLocation} 
+                        onChange={(e) => setSameDropOffLocation(!sameDropOffLocation)} 
+                    />
+                </div>
+            </form>
+            
+            <footer className="search-footer">
+                <small>
+                    Powered by <a href="https://auttom.io">Auttom</a>
+                </small>
+            </footer>
+        </div>
     );
 };
 
